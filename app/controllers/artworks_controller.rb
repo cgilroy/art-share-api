@@ -1,7 +1,9 @@
 class ArtworksController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
-    render json: Artwork.all
+    if params[:user_id]
+        render json: Artwork.artworks_for_user_id(params[:user_id])
+    end
   end
 
   def create
