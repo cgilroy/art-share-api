@@ -1,7 +1,12 @@
 class UsersController < ApplicationController
   skip_before_action :verify_authenticity_token
   def index
-    render json: User.all
+    if params[:query]
+      users = User.where('UPPER(users.username) LIKE ?',"%#{params[:query].upcase}%")
+    else
+      users = User.all
+    end
+    render json: users
   end
 
   def create
